@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Calendar;
+
 @Service
 public class TransactionServiceImpl implements ITransactionService {
 
@@ -17,6 +19,7 @@ public class TransactionServiceImpl implements ITransactionService {
     @Override
     public Mono<Transaction> create(Transaction transaction) {
         transaction.setStatus(TransactionStatus.REGISTERED.name());
+        transaction.setTransactionDate(Calendar.getInstance().getTime());
         return transactionRepository.save(transaction);
     }
     @Override
@@ -42,7 +45,7 @@ public class TransactionServiceImpl implements ITransactionService {
     public Mono<Transaction> delete(String id) {
         return transactionRepository.findById(id)
                 .switchIfEmpty(Mono.empty())
-                .doOnNext(p -> p.setStatus(TransactionStatus.REGISTERED.name()))
+                .doOnNext(p -> p.setStatus(TransactionStatus.DELETED.name()))
                 .flatMap(transactionRepository::save);
     }
 }

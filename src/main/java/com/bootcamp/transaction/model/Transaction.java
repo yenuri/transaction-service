@@ -21,8 +21,8 @@ public class Transaction {
     private String id;
     private Customer customer;
     private String transactionType;
-    private Date transactionDate;
     private Product product;
-    private Date createAt;
+    private Double amount;
+    private Date transactionDate;
     private String status;
 }
